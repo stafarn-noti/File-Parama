@@ -1,0 +1,57 @@
+#!/bin/bash
+sudo su
+yum install -y httpd
+systemctl restart httpd
+systemctl enable httpd
+echo "<h1> At $(hostname -f) </h1>" > /var/www/html/index.html
+
+
+##### install apache
+
+ec2-user
+sudo yum install httpd -y
+sudo passwd root
+su - root
+cd /var/www/html/
+vi index.html
+systemctl restart httpd
+
+
+
+#### install tomcat  (https://www.youtube.com/watch?v=68WNroQBUts&t=118s)
+yum install java-1.8.0
+yum remove java-1.7.0-openjdk
+
+hostname tomcat
+cd /opt/
+wget https://downloads.apache.org/tomcat/tomcat-8/v8.5.57/bin/apache-tomcat-8.5.57.tar.gz
+tar xvzf apache-tomcat-8.5.57.tar.gz
+mv apache-tomcat-8.5.57 tomcat
+cd /opt/tomcat/bin
+./startup.sh
+http:// IP :8080     (open SG port 8080)
+
+
+edit 
+/opt/tomcat/webapps/host-manager/META-INF/context.xml
+/opt/tomcat/webapps/manager/META-INF/context.xml
+
+<!--
+<Valve className="org.apache.catalina.valves.RemoteAddrValve"
+allow="127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1" />
+-->
+
+vim /opt/tomcat/conf/tomcat-users.xml
+
+<role  rolename="admin" />
+<user  	username="admin"
+password="admin"
+roles="admin,manager,manager-script,manager-gui" />
+
+/opt/tomcat/bin/shutdown.sh
+/opt/tomcat/bin/startup.sh
+
+http://18.136.104.119:8080/		tomcat 7
+http://3.0.177.182:8080/		tomcat 8
+
+
