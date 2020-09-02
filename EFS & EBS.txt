@@ -1,0 +1,25 @@
+
+###  EFS 
+mount -t efs fs-d2f4f893.efs.ap-southeast-1.amazonaws.com /opt/appsdata
+
+yum install -y nfs-utils
+mount -t nfs4 	fs-48f5f909.efs.us-east-1.amazonaws.com:/ /opt/appsdata
+
+mount -t nfs4 fs-48f5f909:/ /opt/appsdata
+
+
+
+################# EBS
+
+lsblk
+
+## check file system 
+file -s /dev/xvdf
+/dev/xvdf: data    <<<  แบบนี้คือยังไม่มี file system
+
+## create file system type ext4
+mkfs -t ext4 /dev/xvdf      
+
+mkdir /newStorage
+mount /dev/xvdf /newStorage
+df -h 
